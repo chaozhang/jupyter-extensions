@@ -16,6 +16,7 @@ import { Context } from '../../context';
 import { Model, ModelService, Pipeline } from '../../service/model';
 import { BaseWidget } from '../base_widget';
 import { EvaluationTable } from './model_evaluation';
+import { EvaluationTableAngular } from './model_evaluation_angular';
 import { ModelPredictions } from './model_predictions';
 import { ModelProperties } from './model_properties';
 
@@ -128,6 +129,24 @@ export class ModelPanel extends React.Component<Props, State> {
 
   async componentDidMount() {
     this.getPipeline();
+
+    if (!document.querySelector('#element')) {
+      const script = document.createElement('script');
+      script.id = 'element';
+      script.type = 'text/javascript';
+      script.src =
+        'https://www.gstatic.com/external_hosted/document_register_element/document-register-element.js';
+      document.head.append(script);
+    }
+
+    if (!document.querySelector('#demo')) {
+      const script = document.createElement('script');
+      script.id = 'demo';
+      script.type = 'text/javascript';
+      script.src =
+        'https://storage.googleapis.com/deeplearning-platform-ui-public/jupyterlab_ucaip/demo.js';
+      document.head.append(script);
+    }
   }
 
   private async getPipeline() {
@@ -162,6 +181,7 @@ export class ModelPanel extends React.Component<Props, State> {
               }
             >
               <AntTab label="Evaluate" />
+              <AntTab label="Evaluate V2" />
               <AntTab label="Test" />
               <AntTab label="Model Properties" />
             </AntTabs>
@@ -172,15 +192,20 @@ export class ModelPanel extends React.Component<Props, State> {
               value={tabState}
               index={0}
             />
-            <ModelPredictions
+            <EvaluationTableAngular
               model={this.props.model}
               value={tabState}
               index={1}
             />
-            <ModelProperties
+            <ModelPredictions
               model={this.props.model}
               value={tabState}
               index={2}
+            />
+            <ModelProperties
+              model={this.props.model}
+              value={tabState}
+              index={3}
               pipeline={this.state.pipeline}
             />
           </ul>

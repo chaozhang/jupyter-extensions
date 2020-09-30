@@ -124,6 +124,7 @@ const style: CSSProperties = {
   tableRow: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    display: 'inherit',
   },
 };
 
